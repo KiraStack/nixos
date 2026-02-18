@@ -1,0 +1,11 @@
+{
+    "DFIntTaskSchedulerTargetFps": "9999",
+    "DFFlagDisableDPIScale": "True",
+    "FFlagDebugDisplayFPS": "True",
+    "FFlagDebugGraphicsDisableDirect3D11": "True",
+    "FFlagDebugGraphicsPreferOpenGL": "True",
+    "FFlagDebugLuaHeapDump": "True",
+    "FFlagDebugSkyGray": "True",
+    "FFlagTaskSchedulerLimitTargetFpsTo240": "False",
+    "FFlagTaskSchedulerLimitTargetFpsTo2402": "False"
+}
