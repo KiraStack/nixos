@@ -1,12 +1,13 @@
 #!/bin/sh
 
 # PATH (environmental vars.)
-export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$HOME/.spicetify:$PATH"
-export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.scripts:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+export GRIMBLAST_EDITOR=gimp
 
 # Programs
 export TERMINAL="kitty"
@@ -19,6 +20,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DOCUMENTS_DIR="$HOME/Documents"
 export XDG_MUSIC_DIR="$HOME/Music"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_SCREENSHOTS_DIR="$XDG_PICTURES_DIR/Screenshots"
 
 # Configure `man` pages
 export MANPAGER='nvim +Man! +"set nocul" +"set noshowcmd" +"set noruler" +"set noshowmode" +"set laststatus=0" +"set showtabline=0" +"set nonumber"'
