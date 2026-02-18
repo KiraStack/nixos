@@ -67,7 +67,7 @@
                       # Specify user-scoped packages.
                       # Makes sense for user-specific apps that shouldn't be available system-wide.
                       home.packages = [
-                        pkgs.bibata-cursor-theme
+                        pkgs.bibata-cursors
                         pkgs.bitwarden-desktop
                       ];
 
@@ -115,16 +115,29 @@
                 # (e.g. to add new system options).
                 imports = [ inputs.aagl.nixosModules.default ];
 
-                # Define your hostname.
-                networking.hostName = "archie";
-
-                # Configure network connections interactively with nmcli or nmtui.
-                # networking.wireless.enable = true; # Enables wireless support via wpa_supplicant
-                networking.networkmanager.enable = true;
-
-                # Use the systemd-boot EFI boot loader.
-                boot.loader.systemd-boot.enable = true;
-                boot.loader.efi.canTouchEfiVariables = true;
+                # Configure network connections.
+                networking = {
+                  hostName = "archie";
+                  networkmanager = {
+                    enable = true;
+                  };
+                  wireless.iwd = {
+                    enable = false;
+                  };
+                  firewall = {
+                    enable = true;
+                    allowedTCPPorts = [
+                      443
+                      80
+                    ];
+                    allowedUDPPorts = [
+                      443
+                      80
+                      44857
+                    ];
+                    allowPing = false;
+                  };
+                };
 
                 # Define your user.
                 users.users.archie = {
@@ -425,18 +438,12 @@
                     enable = false; # remove conflicting package.
                   };
                   pipewire = {
-                    enable = true;
+                    enable = false;
                     alsa = {
                       enable = true;
                       support32Bit = true;
                     };
-                    jack = {
-                      enable = true;
-                    };
                     pulse = {
-                      enable = true;
-                    };
-                    wireplumber = {
                       enable = true;
                     };
                   };
@@ -456,20 +463,16 @@
 
                 # Configure hardware-related configs
                 hardware = {
+                  bluetooth = {
+                    enable = false;
+                  };
                   graphics = {
-                    enable = lib.mkIf use_nvidia true;
+                    enable = true;
                   };
-                  nvidia.modesetting = {
-                    enable = lib.mkIf use_nvidia true;
-                  };
-                  enableRedistributableFirmware = true;
                 };
 
-                # Enable sound with pipewire.
-                # sound.enable = true; # deprecated
-                security.rtkit = {
-                  enable = true;
-                };
+                # Enable sound (using `pulseaudio`).
+                # sound = { enable = true; }; # deprecated.
 
                 # List packages installed in system profile.
                 # You can use https://search.nixos.org/ to find more packages (and options).
@@ -523,9 +526,44 @@
                 ];
 
                 # Enable portals (how programs interact with each other).
-                xdg.portal = {
-                  enable = true;
-                  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+                xdg = {
+                  portal = {
+                    enable = true;
+                    extraPortals = with pkgs; [
+                      xdg-desktop-portal-wlr
+                      xdg-desktop-portal-gtk
+                    ];
+                    # gtkUsePortal = true; # deprecated.
+                  };
+                };
+
+                # Nix configuration settings.
+                nix = {
+                  settings.auto-optimise-store = true;
+                  settings.allowed-users = [ "archie" ];
+                  gc = {
+                    automatic = true;
+                    dates = "weekly";
+                    options = "--delete-older-than 7d";
+                  };
+                  extraOptions = ''
+                    experimental-features = nix-command flakes
+                    keep-outputs = true
+                    keep-derivations = true
+                  '';
+                };
+
+                # Bootloader and system startup configuration.
+                boot = {
+                  tmp = {
+                    cleanOnBoot = true;
+                  };
+                  loader = {
+                    systemd-boot.enable = true;
+                    systemd-boot.editor = false;
+                    efi.canTouchEfiVariables = true;
+                    timeout = 0;
+                  };
                 };
 
                 # Configure locales (timezone and keyboard layout)
@@ -536,6 +574,26 @@
                   keyMap = "uk";
                 };
 
+                # System security configuration.
+                security = {
+                  sudo = {
+                    enable = false;
+                  };
+                  doas = {
+                    enable = true;
+                    extraRules = [
+                      {
+                        users = [ "archie" ];
+                        keepEnv = true;
+                        persist = true;
+                      }
+                    ];
+                  };
+                  rtkit = {
+                    enable = true;
+                  };
+                  protectKernelImage = true;
+                };
                 # Add global fonts available to all users and apps.
                 fonts.packages = with pkgs; [
                   pkgs.nerd-fonts.jetbrains-mono
