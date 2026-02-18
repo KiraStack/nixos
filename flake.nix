@@ -458,53 +458,51 @@
                 # You can use https://search.nixos.org/ to find more packages (and options).
                 environment.systemPackages = with pkgs; [
                   # System
-                  acpi
-                  age
-                  dunst
-                  fzf
-                  gnupg
-                  htop
-                  libnotify
-                  ripgrep
-                  unzip
+                  pkgs.acpi
+                  pkgs.age
+                  pkgs.dunst
+                  pkgs.fzf
+                  pkgs.gnupg
+                  pkgs.htop
+                  pkgs.libnotify
+                  pkgs.ripgrep
+                  pkgs.unzip
 
                   # Display (wayland)
-                  kitty
-                  mpv
-                  neofetch
-                  hyprpaper
-                  rofi # rofi-wayland
-                  vesktop
-                  vinegar
-                  vscode
-                  waybar
-                  (waybar.overrideAttrs (attrs: {
+                  pkgs.kitty
+                  pkgs.mpv
+                  pkgs.neofetch
+                  pkgs.hyprpaper
+                  pkgs.rofi # pkgs.rofi-wayland
+                  pkgs.vesktop
+                  pkgs.vinegar
+                  pkgs.vscode
+                  pkgs.waybar
+                  (pkgs.waybar.overrideAttrs (attrs: {
                     mesonFlags = attrs.mesonFlags ++ [ "-Dexperimental=true" ];
                   }))
 
                   # Fonts
-                  fonts.jetbrains-mono
+                  pkgs.jetbrains-mono
 
                   # Tools
-                  grim # screenshots
-                  slurp # area selection
-                  hyprctl # Hyprland window/output info
-                  hyprpicker # optional: freeze screen selection
-                  wl-clipboard # wl-copy
-                  jq # JSON parsing
-                  notify-send # libnotify already installed; command provided
-                  nixfmt
-                  python3
-                  starship
+                  pkgs.grim # screenshots
+                  pkgs.slurp # area selection
+                  pkgs.hyprpicker # optional: freeze screen selection
+                  pkgs.wl-clipboard # wl-copy
+                  pkgs.jq # JSON parsing
+                  pkgs.nixfmt
+                  pkgs.python3
+                  pkgs.starship
 
                   # Extra (optional)
-                  bat # syntax-highlighting cat
-                  fd # alternative to find
-                  ripgrep # already included, but good for search
-                  unzip # already included
-                  wget
-                  curl
-                  git
+                  pkgs.bat # syntax-highlighting cat
+                  pkgs.fd # alternative to find
+                  pkgs.ripgrep # already included, but good for search
+                  pkgs.unzip # already included
+                  pkgs.wget
+                  pkgs.curl
+                  pkgs.git
                 ];
 
                 # Enable portals (how programs interact with each other).
