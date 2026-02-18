@@ -23,6 +23,11 @@ export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_PICTURES_DIR="$HOME/Pictures"
 export XDG_SCREENSHOTS_DIR="$XDG_PICTURES_DIR/Screenshots"
 
+# Flatpak apps (XDG dir.)
+export XDG_DATA_DIRS="$XDG_DATA_DIRS"
+export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share"
+export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
+
 # Configure `man` pages
 export MANPAGER='nvim +Man! +"set nocul" +"set noshowcmd" +"set noruler" +"set noshowmode" +"set laststatus=0" +"set showtabline=0" +"set nonumber"'
 

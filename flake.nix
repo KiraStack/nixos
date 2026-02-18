@@ -493,9 +493,9 @@
                   pkgs.mpv
                   pkgs.neofetch
                   pkgs.hyprpaper
-                  pkgs.rofi # pkgs.rofi-wayland
+                  pkgs.rofi # old: pkgs.rofi-wayland
                   pkgs.vesktop
-                  pkgs.vinegar
+                  # pkgs.vinegar # deprecated: use `flatpak install flathub org.vinegarhq.Vinegar` instead.
                   pkgs.vscode
                   pkgs.waybar
                   (pkgs.waybar.overrideAttrs (attrs: {
