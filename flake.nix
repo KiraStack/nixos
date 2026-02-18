@@ -70,13 +70,17 @@
 
                       # Specify user-scoped packages.
                       # Makes sense for user-specific apps that shouldn't be available system-wide.
-                      home.packages = [
-                        pkgs.bibata-cursors
-                        pkgs.bitwarden-desktop
+                      home.packages = with pkgs; [
+                        bibata-cursors
+                        bitwarden-desktop
+                        vesktop
+                        # vinegar # deprecated: use `flatpak install flathub org.vinegarhq.Vinegar` instead.
+                        vscode
                       ];
 
-                      # Map dotfiles to source directories.
+                      # Deploy custom client configuration per-user.
                       home.file = {
+                        "/etc/pulse".source = ./components/pulse;
                         "$HOME/.config/discord".source = ./components/discord;
                         "$HOME/.config/dunst".source = ./components/dunst;
                         "$HOME/.config/fastfetch".source = ./components/fastfetch;
@@ -482,51 +486,33 @@
                 # You can use https://search.nixos.org/ to find more packages (and options).
                 environment.systemPackages = with pkgs; [
                   # System
-                  pkgs.acpi
-                  pkgs.age
-                  pkgs.dunst
-                  pkgs.fzf
-                  pkgs.gnupg
-                  pkgs.htop
-                  pkgs.libnotify
-                  pkgs.ripgrep
-                  pkgs.unzip
+                  acpi
+                  age
+                  dunst
+                  fzf
+                  htop
+                  ripgrep
+                  unzip
 
                   # Display (wayland)
-                  pkgs.kitty
-                  pkgs.mpv
-                  pkgs.neofetch
-                  pkgs.hyprpaper
-                  pkgs.rofi # old: pkgs.rofi-wayland
-                  pkgs.vesktop
-                  # pkgs.vinegar # deprecated: use `flatpak install flathub org.vinegarhq.Vinegar` instead.
-                  pkgs.vscode
-                  pkgs.waybar
-                  (pkgs.waybar.overrideAttrs (attrs: {
+                  kitty
+                  mpv
+                  neofetch
+                  hyprpaper
+                  rofi # old: rofi-wayland
+                  waybar
+                  (waybar.overrideAttrs (attrs: {
                     mesonFlags = attrs.mesonFlags ++ [ "-Dexperimental=true" ];
                   }))
 
-                  # Fonts
-                  pkgs.jetbrains-mono
-
                   # Tools
-                  pkgs.grim # screenshots
-                  pkgs.slurp # area selection
-                  pkgs.hyprpicker # optional: freeze screen selection
-                  pkgs.wl-clipboard # wl-copy
-                  pkgs.jq # JSON parsing
-                  pkgs.nixfmt
-                  pkgs.python3
-                  pkgs.starship
-
-                  # Extra (optional)
-                  pkgs.bat # syntax-highlighting cat
-                  pkgs.fd # alternative to find
-                  pkgs.ripgrep # already included, but good for search
-                  pkgs.unzip # already included
-                  pkgs.wget
-                  pkgs.curl
-                  pkgs.git
+                  git
+                  grim # screenshots
+                  slurp # area selection
+                  wl-clipboard
+                  jq
+                  nixfmt
+                  starship
                 ];
 
                 # Enable portals (how programs interact with each other).
