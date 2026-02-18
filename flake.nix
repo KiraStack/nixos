@@ -2,6 +2,10 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
+# NOTE: Ensure /etc/nixos is owned by root to allow flake-based rebuilds:
+# doas chown -R root:root /etc/nixos
+# Then rebuild with: doas nixos-rebuild switch --flake /etc/nixos/
+
 {
   description = "None";
   inputs = {
