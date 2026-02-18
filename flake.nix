@@ -439,7 +439,7 @@
                     };
                   };
                   pulseaudio = {
-                    enable = false; # remove conflicting package.
+                    enable = true;
                   };
                   pipewire = {
                     enable = false;
