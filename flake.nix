@@ -66,22 +66,25 @@
 
                       # Specify user-scoped packages.
                       # Makes sense for user-specific apps that shouldn't be available system-wide.
-                      home.packages = [ pkgs.bitwarden-desktop ];
+                      home.packages = [
+                        pkgs.bibata-cursor-theme
+                        pkgs.bitwarden-desktop
+                      ];
 
                       # Map dotfiles to source directories.
                       home.file = {
-                        "$HOME/.config/discord".source = ./modules/discord;
-                        "$HOME/.config/dunst".source = ./modules/dunst;
-                        "$HOME/.config/fastfetch".source = ./modules/fastfetch;
-                        "$HOME/.config/fish".source = ./modules/fish;
-                        "$HOME/.config/hypr".source = ./modules/hypr;
-                        "$HOME/.config/htop".source = ./modules/htop;
-                        "$HOME/.config/kitty".source = ./modules/kitty;
-                        "$HOME/.config/neofetch".source = ./modules/neofetch;
-                        "$HOME/.config/nvim".source = ./modules/nvim;
-                        "$HOME/.config/starship".source = ./modules/starship;
-                        "$HOME/.config/wofi".source = ./modules/wofi;
-                        "$HOME/.config/zshrc".source = ./modules/zsh;
+                        "$HOME/.config/discord".source = ./components/discord;
+                        "$HOME/.config/dunst".source = ./components/dunst;
+                        "$HOME/.config/fastfetch".source = ./components/fastfetch;
+                        "$HOME/.config/fish".source = ./components/fish;
+                        "$HOME/.config/hypr".source = ./components/hypr;
+                        "$HOME/.config/htop".source = ./components/htop;
+                        "$HOME/.config/kitty".source = ./components/kitty;
+                        "$HOME/.config/neofetch".source = ./components/neofetch;
+                        "$HOME/.config/nvim".source = ./components/nvim;
+                        "$HOME/.config/starship".source = ./components/starship;
+                        "$HOME/.config/wofi".source = ./components/wofi;
+                        "$HOME/.config/zshrc".source = ./components/zsh;
                         "$HOME/.scripts".source = ./scripts; # map `scripts` folder to base.
                       };
 
@@ -399,6 +402,13 @@
 
                 # Manage service configurations declaratively.
                 services = {
+                  xserver = {
+                    desktopManager = {
+                      xterm = {
+                        enable = false;
+                      };
+                    };
+                  };
                   displayManager = {
                     ly = {
                       enable = true;
@@ -411,12 +421,8 @@
                       };
                     };
                   };
-                  dunst = {
-                    enable = true;
-                    # settings.global = {} # refer to `.config` instead.
-                  };
-                  greetd = {
-                    enable = false;
+                  pulseaudio = {
+                    enable = false; # remove conflicting package.
                   };
                   pipewire = {
                     enable = true;
@@ -434,17 +440,17 @@
                       enable = true;
                     };
                   };
-                  pulseaudio = {
-                    enable = false; # remove conflicting package.
-                    extraConfig = "load-module module-combine-sink";
-                    package = pkgs.pulseaudioFull;
+                  flatpak = {
+                    # to enable it,
+                    # run `flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`.
+                    enable = true;
                   };
-                  xserver = {
-                    desktopManager = {
-                      xterm = {
-                        enable = false;
-                      };
-                    };
+                  dunst = {
+                    enable = true;
+                    # settings.global = {} # refer to `.config` instead.
+                  };
+                  greetd = {
+                    enable = false;
                   };
                 };
 
