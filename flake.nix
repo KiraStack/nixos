@@ -11,6 +11,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    aagl = {
+      # url = "github:ezKEa/aagl-gtk-on-nix/release-25.11"; # deprecated.
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    }; # for `genshin`.
   };
   outputs =
     inputs@{
@@ -103,6 +108,10 @@
                 ...
               }:
               {
+                # Import external modules
+                # (e.g. to add new system options).
+                imports = [ inputs.aagl.nixosModules.default ];
+
                 # Define your hostname.
                 networking.hostName = "archie";
 
@@ -121,6 +130,7 @@
                   extraGroups = [
                     "wheel"
                     "networkmanager"
+                    "audio"
                   ];
                   # For security, do not store passwords in plain text.
                   # Instead, leave it out for manual setup or use hashed passwords
@@ -138,7 +148,7 @@
                     "steam-unwrapped"
                   ];
 
-                # Manage configurations declaratively.
+                # Manage program configurations declaratively.
                 programs = {
                   hyprland = {
                     enable = true;
@@ -157,7 +167,7 @@
                     #     email = "google@gmail.com";
                     #   };
                     #   init.defaultBranch = "main";
-                    # };
+                    # }; # refer to `.config` instead.
                   };
                   fish = {
                     enable = true;
@@ -171,7 +181,7 @@
                   neovim = {
                     enable = true;
                     defaultEditor = true;
-                    # plugins = with pkgs.vimPlugins; [ ];
+                    # plugins = with pkgs.vimPlugins; [ ]; # refer to `.config` instead.
                   };
                   firefox = {
                     enable = true;
@@ -380,24 +390,33 @@
                       };
                     };
                   };
+                  anime-games-launcher = {
+                    # `hoyoverse|kuro games|mrdrnose`.
+                    # creates launcher and /etc/hosts rules.
+                    enable = true;
+                  };
                 };
-                # User services
+
+                # Manage service configurations declaratively.
                 services = {
+                  displayManager = {
+                    ly = {
+                      enable = true;
+                      settings = {
+                        bg = "0x00000000";
+                        fg = "0x00FFFFFF";
+                        border_fg = "0x00FFFFFF";
+                        error_fg = "0x00FF0000";
+                        clock_color = "0x00FFFFFF";
+                      };
+                    };
+                  };
+                  dunst = {
+                    enable = true;
+                    # settings.global = {} # refer to `.config` instead.
+                  };
                   greetd = {
                     enable = false;
-                  };
-                  xserver.desktopManager.xterm = {
-                    enable = false;
-                  };
-                  displayManager.ly = {
-                    enable = true;
-                    settings = {
-                      bg = "0x00000000";
-                      fg = "0x00FFFFFF";
-                      border_fg = "0x00FFFFFF";
-                      error_fg = "0x00FF0000";
-                      clock_color = "0x00FFFFFF";
-                    };
                   };
                   pipewire = {
                     enable = true;
@@ -405,44 +424,25 @@
                       enable = true;
                       support32Bit = true;
                     };
-                    pulse.enable = true;
-                    jack.enable = true;
+                    jack = {
+                      enable = true;
+                    };
+                    pulse = {
+                      enable = true;
+                    };
+                    wireplumber = {
+                      enable = true;
+                    };
                   };
-                  dunst = {
-                    enable = true;
-                    settings = {
-                      global = {
-                        # Position and placement
-                        origin = "top-left";
-                        offset = "60x12";
-
-                        # Separators
-                        separator_height = 2;
-                        separator_color = "frame";
-
-                        # Padding or spacing
-                        padding = 12;
-                        horizontal_padding = 12;
-                        text_icon_padding = 12;
-                        frame_width = 4;
-
-                        # Timeout and idle
-                        idle_threshold = 120;
-                        timeout = 2;
-
-                        # Fonts and text formatting
-                        font = "JetBrainsMono NerdFont 12";
-                        line_height = 0;
-                        format = "<b>%s</b>\n%b"; # title bold, body normal
-                        alignment = "center";
-                        icon_position = "off";
-                        startup_notification = "false";
-
-                        # Visual styling
-                        corner_radius = 12;
-                        frame_color = "#44465c"; # border/stroke color
-                        background = "#303241"; # notification background
-                        foreground = "#d9e0ee"; # notification text color
+                  pulseaudio = {
+                    enable = false; # remove conflicting package.
+                    extraConfig = "load-module module-combine-sink";
+                    package = pkgs.pulseaudioFull;
+                  };
+                  xserver = {
+                    desktopManager = {
+                      xterm = {
+                        enable = false;
                       };
                     };
                   };
@@ -450,8 +450,19 @@
 
                 # Configure hardware-related configs
                 hardware = {
-                  graphics.enable = lib.mkIf use_nvidia true;
-                  nvidia.modesetting.enable = lib.mkIf use_nvidia true;
+                  graphics = {
+                    enable = lib.mkIf use_nvidia true;
+                  };
+                  nvidia.modesetting = {
+                    enable = lib.mkIf use_nvidia true;
+                  };
+                  enableRedistributableFirmware = true;
+                };
+
+                # Enable sound with pipewire.
+                # sound.enable = true; # deprecated
+                security.rtkit = {
+                  enable = true;
                 };
 
                 # List packages installed in system profile.
@@ -510,10 +521,6 @@
                   enable = true;
                   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
                 };
-
-                # Enable sound with pipewire.
-                # sound.enable = true; # now unnecessary
-                security.rtkit.enable = true;
 
                 # Configure locales (timezone and keyboard layout)
                 time.timeZone = "Europe/London";
