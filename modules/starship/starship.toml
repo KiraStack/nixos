@@ -1,0 +1,70 @@
+# Schema for editor autocomplete
+"$schema" = "https://starship.rs/config-schema.json"
+
+# Add blank line between prompts
+add_newline = true
+
+# Prompt layout
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$python\
+$character"""
+
+# Directory styling
+[directory]
+style = "blue"
+
+# Prompt symbol
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
+
+# Git branch name formatting
+[git_branch]
+format = "[$branch]($style)"
+style = "bright-black"
+
+# Git status icons
+[git_status]
+format = " ($ahead_behind$stashed)]($style)"
+style = "cyan"
+
+# Hidden symbols
+conflicted = ""
+untracked  = ""
+modified   = ""
+staged     = ""
+renamed    = ""
+deleted    = ""
+
+# Visible stash indicator
+stashed = "≡"
+
+# Git operation state
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+# Command duration (duh)
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+# Python virtualenv
+[python]
+format = "[$virtualenv]($style) "
+style = "bright-black"
+detect_extensions = []
+detect_files = []
+
+# Hide package version module entirely
+[package]
+disabled = true

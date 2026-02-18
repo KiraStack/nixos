@@ -1,0 +1,49 @@
+[global]
+alignment = left
+browser = /usr/bin/firefox --new-tab
+class = Dunst
+corner_radius = 10
+dmenu = /usr/bin/wofi -p dunst:
+follow = mouse
+font = none 8 # fallback to default font
+frame_width = 1
+hide_duplicate_count = false
+horizontal_padding = 8
+icon_path = /usr/share/icons/Papirus-Dark/16x16/status/:/usr/share/icons/Papirus-Dark/16x16/devices/:/usr/share/icons/Papirus-Dark/16x16/actions/:/usr/share/icons/Papirus-Dark/16x16/animations/:/usr/share/icons/Papirus-Dark/16x16/apps/:/usr/share/icons/Papirus-Dark/16x16/categories/:/usr/share/icons/Papirus-Dark/16x16/emblems/:/usr/share/icons/Papirus-Dark/16x16/emotes/:/usr/share/icons/Papirus-Dark/16x16/devices/mimetypes:/usr/share/icons/Papirus-Dark/16x16/panel/:/usr/share/icons/Papirus-Dark/16x16/places/
+idle_threshold = 120
+indicate_hidden = yes
+line_height = 0
+markup = full
+max_icon_size = 64
+min_icon_size = 0
+monitor = 0
+offset = (10, 10)
+origin = top-right
+padding = 8
+separator_color = frame
+separator_height = 2
+show_age_threshold = 60
+show_indicators = yes
+sort = yes
+stack_duplicates = true
+text_icon_padding = 0
+timeout = 5
+title = Dunst
+vertical_alignment = center
+word_wrap = yes
+
+[urgency_low]
+background = "#1E1E2E"
+foreground = "#CDD6F4"
+frame_color = "#CDD6F4"
+
+[urgency_normal]
+background = "#1E1E2E"
+foreground = "#CDD6F4"
+frame_color = "#CDD6F4"
+
+
+[urgency_critical]
+background = "#1E1E2E"
+foreground = "#CDD6F4"
+frame_color = "#CDD6F4"
