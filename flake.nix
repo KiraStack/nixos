@@ -140,7 +140,11 @@
                           source = ./components/wofi;
                           recursive = true;
                         };
-                        "/home/archie/.config/zshrc" = {
+                        "/home/archie/.config/.zshrc" = {
+                          source = ./components/.zshrc;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/zsh" = {
                           source = ./components/zsh;
                           recursive = true;
                         };
@@ -256,12 +260,9 @@
                   };
                   fish = {
                     enable = true;
-                    interactiveShellInit = ''
-                      set fish_greeting ""
-                    '';
-                  };
-                  starship = {
-                    enable = true;
+                    # interactiveShellInit = ''
+                    #   set fish_greeting ""
+                    # '';
                   };
                   neovim = {
                     enable = true;
@@ -553,6 +554,7 @@
                   # System
                   acpi
                   age
+                  cava
                   dunst
                   fzf
                   htop
@@ -561,10 +563,10 @@
 
                   # Display (wayland)
                   kitty
-                  mpv
-                  nautilus
-                  neofetch
                   hyprpaper
+                  mpv
+                  neofetch
+                  ranger
                   rofi # old: rofi-wayland
                   waybar
                   (waybar.overrideAttrs (attrs: {
@@ -578,7 +580,6 @@
                   wl-clipboard
                   jq
                   nixfmt
-                  starship
                 ];
 
                 # Enable portals (how programs interact with each other).
