@@ -11,9 +11,10 @@ alias ll='ls -alF --color=auto --group-directories-first'
 
 # Git shortcuts
 alias gs='git status'
-alias gd='git diff'
+alias gd='git d`iff'
 alias gl='git log --oneline --graph --decorate'
 
 # FZF shortcuts
 alias f='fzf'
 alias fe='_smooth_fzf'
+``

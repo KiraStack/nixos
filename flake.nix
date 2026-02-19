@@ -132,6 +132,14 @@
                           source = ./components/nvim;
                           recursive = true;
                         };
+                        "/home/archie/.config/ranger" = {
+                          source = ./components/ranger;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/rofi" = {
+                          source = ./components/rofi;
+                          recursive = true;
+                        };
                         "/home/archie/.config/starship" = {
                           source = ./components/starship;
                           recursive = true;
@@ -551,6 +559,11 @@
                 # List packages installed in system profile.
                 # You can use https://search.nixos.org/ to find more packages (and options).
                 environment.systemPackages = with pkgs; [
+                  # Alt.
+                  wl-copy
+                  wl-clip-persist
+                  cliphist
+
                   # System
                   acpi
                   age

@@ -1,0 +1,1 @@
+Before submitting a bug report, read the README file and plugin doc (documentation) and confirm the issue has not already been reported. Provide a short description of the issue, steps to reproduce it, and your environment (e.g., operating system, terminal, Neovim version)
