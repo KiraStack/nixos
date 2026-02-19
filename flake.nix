@@ -164,7 +164,36 @@
                       };
 
                       # Environment variables exported in user sessions.
-                      home.sessionVariables = {
+                      # This is using a rec (recursive) expression to set and access XDG_BIN_HOME within the expression
+                      # For more on rec expressions see https://nix.dev/tutorials/first-steps/nix-language#recursive-attribute-set-rec
+                      home.sessionVariables = rec {
+                        # Programs
+                        TERMINAL = "kitty";
+                        BROWSER = "firefox";
+                        VISUAL = "nvim";
+                        EDITOR = "nvim";
+
+                        # XDG directories
+                        XDG_CACHE_HOME = "$HOME/.cache";
+                        XDG_CONFIG_HOME = "$HOME/.config";
+                        XDG_DATA_HOME = "$HOME/.local/share";
+                        XDG_STATE_HOME = "$HOME/.local/state";
+                        XDG_BIN_HOME = "$HOME/.local/bin";
+                        XDG_DOCUMENTS_DIR = "$HOME/Documents";
+                        XDG_MUSIC_DIR = "$HOME/Music";
+                        XDG_PICTURES_DIR = "$HOME/Pictures";
+                        XDG_SCREENSHOTS_DIR = "$XDG_PICTURES_DIR/Screenshots";
+
+                        # PATH (environmental vars.)
+                        PATH = [
+                          "$HOME/.spicetify"
+                          "$HOME/.scripts"
+                          "$HOME/.local/bin"
+                          "$HOME/.cargo/bin"
+                          "$HOME/.local/share/pnpm"
+                        ];
+
+                        # Wayland vars.
                         WLR_NO_HARDWARE_CURSORS = lib.mkIf use_nvidia "1"; # if your cursor becomes invis.
                         NIXOS_OZONE_WL = "1";
                       };
