@@ -81,28 +81,88 @@
                       # Deploy custom client configuration per-user.
                       home.file = {
                         # System-wide configuration.
-                        "/etc/pulse" = { source = ./components/pulse; recursive = true; };
-                        "/home/archie/.scripts" = { source = ./scripts; recursive = true; };
+                        "/etc/pulse" = {
+                          source = ./components/pulse;
+                          recursive = true;
+                        };
+                        "/home/archie/.scripts" = {
+                          source = ./scripts;
+                          recursive = true;
+                        };
 
                         # User configuration directories.
-                        "/home/archie/.config/cava" = { source = ./components/cava; recursive = true; };
-                        "/home/archie/.config/discord" = { source = ./components/discord; recursive = true; };
-                        "/home/archie/.config/dunst" = { source = ./components/dunst; recursive = true; };
-                        "/home/archie/.config/fastfetch" = { source = ./components/fastfetch; recursive = true; };
-                        "/home/archie/.config/fish" = { source = ./components/fish; recursive = true; };
-                        "/home/archie/.config/gtk-3.0" = { source = ./components/gtk-3.0; recursive = true; };
-                        "/home/archie/.config/gtk-4.0" = { source = ./components/gtk-4.0; recursive = true; };
-                        "/home/archie/.config/hypr" = { source = ./components/hypr; recursive = true; };
-                        "/home/archie/.config/htop" = { source = ./components/htop; recursive = true; };
-                        "/home/archie/.config/kitty" = { source = ./components/kitty; recursive = true; };
-                        "/home/archie/.config/neofetch" = { source = ./components/neofetch; recursive = true; };
-                        "/home/archie/.config/nvim" = { source = ./components/nvim; recursive = true; };
-                        "/home/archie/.config/ranger" = { source = ./components/ranger; recursive = true; };
-                        "/home/archie/.config/rofi" = { source = ./components/rofi; recursive = true; };
-                        "/home/archie/.config/starship" = { source = ./components/starship; recursive = true; };
-                        "/home/archie/.config/wofi" = { source = ./components/wofi; recursive = true; };
-                        "/home/archie/.config/.zshrc" = { source = ./components/.zshrc; recursive = true; };
-                        "/home/archie/.config/zsh" = { source = ./components/zsh; recursive = true; };
+                        "/home/archie/.config/cava" = {
+                          source = ./components/cava;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/discord" = {
+                          source = ./components/discord;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/dunst" = {
+                          source = ./components/dunst;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/fastfetch" = {
+                          source = ./components/fastfetch;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/fish" = {
+                          source = ./components/fish;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/gtk-3.0" = {
+                          source = ./components/gtk-3.0;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/gtk-4.0" = {
+                          source = ./components/gtk-4.0;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/hypr" = {
+                          source = ./components/hypr;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/htop" = {
+                          source = ./components/htop;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/kitty" = {
+                          source = ./components/kitty;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/neofetch" = {
+                          source = ./components/neofetch;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/nvim" = {
+                          source = ./components/nvim;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/ranger" = {
+                          source = ./components/ranger;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/rofi" = {
+                          source = ./components/rofi;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/starship" = {
+                          source = ./components/starship;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/wofi" = {
+                          source = ./components/wofi;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/.zshrc" = {
+                          source = ./components/.zshrc;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/zsh" = {
+                          source = ./components/zsh;
+                          recursive = true;
+                        };
                       };
                     };
                 };
@@ -295,6 +355,22 @@
                     # `hoyoverse, kuro games, mrdrnose`.
                     enable = true;
                   };
+                  obs-studio = {
+                    enable = true;
+                    package = (
+                      pkgs.obs-studio.override {
+                        cudaSupport = true;
+                      }
+                    );
+                    plugins = with pkgs.obs-studio-plugins; [
+                      wlrobs
+                      obs-backgroundremoval
+                      obs-pipewire-audio-capture
+                      obs-vaapi # AMD hardware acceleration
+                      obs-gstreamer
+                      obs-vkcapture
+                    ];
+                  };
                 };
 
                 # Manage service configurations declaratively.
@@ -314,6 +390,9 @@
                       };
                     };
                   };
+                  pulseaudio = {
+                    enable = false;
+                  };
                   pipewire = {
                     enable = true;
                     alsa = {
@@ -322,6 +401,26 @@
                     };
                     pulse = {
                       enable = true;
+                    };
+                    extraConfig.pipewire."91-null-sinks" = {
+                      "context.objects" = [
+                        # https://docs.pipewire.org/page_man_pipewire_conf_5.html#pipewire_conf__context_objects
+                        {
+                          factory = "adapter";
+                          args = {
+                            "factory.name" = "support.null-audio-sink"; # "api.alsa.pcm.source"? -- also couldnt find any documentation on this
+                            "node.name" = "Microphone-Proxy";
+                            "node.description" = "micspam";
+                            "media.class" = "Audio/Source/Virtual"; # "Audio/Source"? -- "Audio/Sink"?
+                            "audio.position" = "MONO"; # "FL,FR"
+                            # "priority.driver" = 8000; # sources = 1600-2000; sinks = 600-1000 -- redundant IF the only microphone
+                            # "priority.session" = 8000; # sources = 1600-2000; sinks = 600-1000 -- redundant IF the only microphone
+                            "node.dont-fallback" = true; # "node.autoconnect"?
+                            "object.linger" = true; # keep linked even if destroyed -- DOESNT WORK BTW
+                            # ...
+                          };
+                        }
+                      ];
                     };
                   };
                   flatpak = {
@@ -391,8 +490,11 @@
                   dunst
                   fzf
                   htop
+                  ladspaPlugins
+                  pipewire
                   ripgrep
                   unzip
+                  wireplumber
 
                   # Display (wayland)
                   kitty
@@ -422,6 +524,7 @@
                     extraPortals = with pkgs; [
                       xdg-desktop-portal-wlr
                       xdg-desktop-portal-gtk
+                      xdg-desktop-portal-hyprland
                     ];
                   };
                 };
