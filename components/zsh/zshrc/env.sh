@@ -28,10 +28,6 @@ export XDG_DATA_DIRS="$XDG_DATA_DIRS:\
 /var/lib/flatpak/exports/share:\
 $HOME/.local/share/flatpak/exports/share"
 
-# XCursor fallback
-export XCURSOR_THEME=Bibata-Original
-export XCURSOR_SIZE=24
-
 # Configure `man` pages
 export MANPAGER='nvim +Man! +"set nocul" +"set noshowcmd" +"set noruler" +"set noshowmode" +"set laststatus=0" +"set showtabline=0" +"set nonumber"'
 

@@ -54,6 +54,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
+                backupFileExtension = "backup";
                 users = {
                   archie =
                     {
@@ -80,20 +81,74 @@
 
                       # Deploy custom client configuration per-user.
                       home.file = {
-                        "/etc/pulse".source = ./components/pulse;
-                        "$HOME/.config/discord".source = ./components/discord;
-                        "$HOME/.config/dunst".source = ./components/dunst;
-                        "$HOME/.config/fastfetch".source = ./components/fastfetch;
-                        "$HOME/.config/fish".source = ./components/fish;
-                        "$HOME/.config/hypr".source = ./components/hypr;
-                        "$HOME/.config/htop".source = ./components/htop;
-                        "$HOME/.config/kitty".source = ./components/kitty;
-                        "$HOME/.config/neofetch".source = ./components/neofetch;
-                        "$HOME/.config/nvim".source = ./components/nvim;
-                        "$HOME/.config/starship".source = ./components/starship;
-                        "$HOME/.config/wofi".source = ./components/wofi;
-                        "$HOME/.config/zshrc".source = ./components/zsh;
-                        "$HOME/.scripts".source = ./scripts; # map `scripts` folder to base.
+                        # System-wide configuration.
+                        "/etc/pulse" = {
+                          source = ./components/pulse;
+                          recursive = true; # ensures it overwrites if exists
+                        };
+
+                        # User configuration directories.
+                        "/home/archie/.config/discord" = {
+                          source = ./components/discord;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/dunst" = {
+                          source = ./components/dunst;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/fastfetch" = {
+                          source = ./components/fastfetch;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/fish" = {
+                          source = ./components/fish;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/gtk-3.0" = {
+                          source = ./components/gtk-3.0;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/gtk-4.0" = {
+                          source = ./components/gtk-4.0;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/hypr" = {
+                          source = ./components/hypr;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/htop" = {
+                          source = ./components/htop;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/kitty" = {
+                          source = ./components/kitty;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/neofetch" = {
+                          source = ./components/neofetch;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/nvim" = {
+                          source = ./components/nvim;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/starship" = {
+                          source = ./components/starship;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/wofi" = {
+                          source = ./components/wofi;
+                          recursive = true;
+                        };
+                        "/home/archie/.config/zshrc" = {
+                          source = ./components/zsh;
+                          recursive = true;
+                        };
+                        "/home/archie/.scripts" = {
+                          # Scripts folder mapped to home
+                          source = ./scripts;
+                          recursive = true;
+                        };
                       };
 
                       # Environment variables exported in user sessions.
@@ -165,12 +220,18 @@
                 environment.defaultPackages = [ ];
 
                 # Allow 'unfree' packages (for specific packages).
-                nixpkgs.config.allowUnfreePredicate =
-                  pkg:
-                  builtins.elem (lib.getName pkg) [
-                    "vscode"
-                    "steam-unwrapped"
-                  ];
+                nixpkgs = {
+                  config = {
+                    allowUnfree = true;
+                    allowUnfreePredicate =
+                      pkg:
+                      builtins.elem (lib.getName pkg) [
+                        "vscode"
+                        "steam"
+                        "steam-unwrapped"
+                      ];
+                  };
+                };
 
                 # Manage program configurations declaratively.
                 programs = {
@@ -414,6 +475,10 @@
                       };
                     };
                   };
+                  steam = {
+                    enable = true;
+                    package = pkgs.steam; # old: pkgs.steam-unwrapped;
+                  };
                   anime-games-launcher = {
                     # `hoyoverse|kuro games|mrdrnose`.
                     # creates launcher and /etc/hosts rules.
@@ -497,6 +562,7 @@
                   # Display (wayland)
                   kitty
                   mpv
+                  nautilus
                   neofetch
                   hyprpaper
                   rofi # old: rofi-wayland
