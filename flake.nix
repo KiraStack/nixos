@@ -559,15 +559,11 @@
                 # List packages installed in system profile.
                 # You can use https://search.nixos.org/ to find more packages (and options).
                 environment.systemPackages = with pkgs; [
-                  # Alt.
-                  wl-copy
-                  wl-clip-persist
-                  cliphist
-
                   # System
                   acpi
                   age
                   cava
+                  cliphist
                   dunst
                   fzf
                   htop
