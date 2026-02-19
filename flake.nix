@@ -10,13 +10,12 @@
   description = "None";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # flake-utils.url = "github:numtide/flake-utils";
     aagl = {
-      # url = "github:ezKEa/aagl-gtk-on-nix/release-25.11"; # deprecated.
       url = "github:ezKEa/aagl-gtk-on-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     }; # for `genshin`.
@@ -70,10 +69,10 @@
                       home.stateVersion = "25.11";
 
                       # Specify user-scoped packages.
-                      # Makes sense for user-specific apps that shouldn't be available system-wide.
                       home.packages = with pkgs; [
                         bibata-cursors
                         bitwarden-desktop
+                        # sober # deprecated: use `flatpak install flathub org.vinegarhq.Sober` instead.
                         vesktop
                         # vinegar # deprecated: use `flatpak install flathub org.vinegarhq.Vinegar` instead.
                         vscode
@@ -82,131 +81,35 @@
                       # Deploy custom client configuration per-user.
                       home.file = {
                         # System-wide configuration.
-                        "/etc/pulse" = {
-                          source = ./components/pulse;
-                          recursive = true; # ensures it overwrites if exists
-                        };
+                        # "/etc/pulse" = { source = ./components/pulse; recursive = true; };
+                        # "/home/archie/.scripts" = { source = ./scripts; recursive = true; };
 
                         # User configuration directories.
-                        "/home/archie/.config/discord" = {
-                          source = ./components/discord;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/dunst" = {
-                          source = ./components/dunst;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/fastfetch" = {
-                          source = ./components/fastfetch;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/fish" = {
-                          source = ./components/fish;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/gtk-3.0" = {
-                          source = ./components/gtk-3.0;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/gtk-4.0" = {
-                          source = ./components/gtk-4.0;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/hypr" = {
-                          source = ./components/hypr;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/htop" = {
-                          source = ./components/htop;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/kitty" = {
-                          source = ./components/kitty;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/neofetch" = {
-                          source = ./components/neofetch;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/nvim" = {
-                          source = ./components/nvim;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/ranger" = {
-                          source = ./components/ranger;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/rofi" = {
-                          source = ./components/rofi;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/starship" = {
-                          source = ./components/starship;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/wofi" = {
-                          source = ./components/wofi;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/.zshrc" = {
-                          source = ./components/.zshrc;
-                          recursive = true;
-                        };
-                        "/home/archie/.config/zsh" = {
-                          source = ./components/zsh;
-                          recursive = true;
-                        };
-                        "/home/archie/.scripts" = {
-                          # Scripts folder mapped to home
-                          source = ./scripts;
-                          recursive = true;
-                        };
+                        # "/home/archie/.config/cava" = { source = ./components/cava; recursive = true; };
+                        # "/home/archie/.config/discord" = { source = ./components/discord; recursive = true; };
+                        # "/home/archie/.config/dunst" = { source = ./components/dunst; recursive = true; };
+                        # "/home/archie/.config/fastfetch" = { source = ./components/fastfetch; recursive = true; };
+                        # "/home/archie/.config/fish" = { source = ./components/fish; recursive = true; };
+                        # "/home/archie/.config/gtk-3.0" = { source = ./components/gtk-3.0; recursive = true; };
+                        # "/home/archie/.config/gtk-4.0" = { source = ./components/gtk-4.0; recursive = true; };
+                        # "/home/archie/.config/hypr" = { source = ./components/hypr; recursive = true; };
+                        # "/home/archie/.config/htop" = { source = ./components/htop; recursive = true; };
+                        # "/home/archie/.config/kitty" = { source = ./components/kitty; recursive = true; };
+                        # "/home/archie/.config/neofetch" = { source = ./components/neofetch; recursive = true; };
+                        # "/home/archie/.config/nvim" = { source = ./components/nvim; recursive = true; };
+                        # "/home/archie/.config/ranger" = { source = ./components/ranger; recursive = true; };
+                        # "/home/archie/.config/rofi" = { source = ./components/rofi; recursive = true; };
+                        # "/home/archie/.config/starship" = { source = ./components/starship; recursive = true; };
+                        # "/home/archie/.config/wofi" = { source = ./components/wofi; recursive = true; };
+                        # "/home/archie/.config/.zshrc" = { source = ./components/.zshrc; recursive = true; };
+                        # "/home/archie/.config/zsh" = { source = ./components/zsh; recursive = true; };
                       };
-
-                      # Environment variables exported in user sessions.
-                      # This is using a rec (recursive) expression to set and access XDG_BIN_HOME within the expression
-                      # For more on rec expressions see https://nix.dev/tutorials/first-steps/nix-language#recursive-attribute-set-rec
-                      home.sessionVariables = rec {
-                        # Programs
-                        TERMINAL = "kitty";
-                        BROWSER = "firefox";
-                        VISUAL = "nvim";
-                        EDITOR = "nvim";
-
-                        # XDG directories
-                        XDG_CACHE_HOME = "$HOME/.cache";
-                        XDG_CONFIG_HOME = "$HOME/.config";
-                        XDG_DATA_HOME = "$HOME/.local/share";
-                        XDG_STATE_HOME = "$HOME/.local/state";
-                        XDG_BIN_HOME = "$HOME/.local/bin";
-                        XDG_DOCUMENTS_DIR = "$HOME/Documents";
-                        XDG_MUSIC_DIR = "$HOME/Music";
-                        XDG_PICTURES_DIR = "$HOME/Pictures";
-                        XDG_SCREENSHOTS_DIR = "$XDG_PICTURES_DIR/Screenshots";
-
-                        # PATH (environmental vars.)
-                        PATH = [
-                          "$HOME/.spicetify"
-                          "$HOME/.scripts"
-                          "$HOME/.local/bin"
-                          "$HOME/.cargo/bin"
-                          "$HOME/.local/share/pnpm"
-                        ];
-
-                        # Wayland vars.
-                        WLR_NO_HARDWARE_CURSORS = lib.mkIf use_nvidia "1"; # if your cursor becomes invis.
-                        NIXOS_OZONE_WL = "1";
-                      };
-
-                      # Extra PATH entries appended to the user environment.
-                      home.sessionPath = [ ];
                     };
                 };
               };
             }
 
             # Main inline NixOS module.
-            # This anonymous function returns the base system configuration for the host.
             (
               {
                 config,
@@ -222,25 +125,7 @@
                 # Configure network connections.
                 networking = {
                   hostName = "archie";
-                  networkmanager = {
-                    enable = true;
-                  };
-                  wireless.iwd = {
-                    enable = false;
-                  };
-                  firewall = {
-                    enable = true;
-                    allowedTCPPorts = [
-                      443
-                      80
-                    ];
-                    allowedUDPPorts = [
-                      443
-                      80
-                      44857
-                    ];
-                    allowPing = false;
-                  };
+                  networkmanager.enable = true;
                 };
 
                 # Define your user.
@@ -261,17 +146,15 @@
                 environment.defaultPackages = [ ];
 
                 # Allow 'unfree' packages (for specific packages).
-                nixpkgs = {
-                  config = {
-                    allowUnfree = true;
-                    allowUnfreePredicate =
-                      pkg:
-                      builtins.elem (lib.getName pkg) [
-                        "vscode"
-                        "steam"
-                        "steam-unwrapped"
-                      ];
-                  };
+                nixpkgs.config = {
+                  allowUnfree = true;
+                  allowUnfreePredicate =
+                    pkg:
+                    builtins.elem (lib.getName pkg) [
+                      "vscode"
+                      "steam"
+                      "steam-unwrapped"
+                    ];
                 };
 
                 # Manage program configurations declaratively.
@@ -287,132 +170,20 @@
                   ];
                   git = {
                     enable = true;
-                    # settings = {
-                    #   user = {
-                    #     name = "google";
-                    #     email = "google@gmail.com";
-                    #   };
-                    #   init.defaultBranch = "main";
-                    # }; # refer to `.config` instead.
                   };
                   fish = {
                     enable = true;
-                    # interactiveShellInit = ''
-                    #   set fish_greeting ""
-                    # '';
                   };
                   neovim = {
                     enable = true;
                     defaultEditor = true;
-                    # plugins = with pkgs.vimPlugins; [ ]; # refer to `.config` instead.
                   };
                   firefox = {
                     enable = true;
                     languagePacks = [
                       # Available languages can be found in https://releases.mozilla.org/pub/firefox/releases/${cfg.package.version}/linux-x86_64/xpi/
-                      # "ach"
-                      # "af"
-                      # "an"
-                      # "ar"
-                      # "ast"
-                      # "az"
-                      # "be"
-                      # "bg"
-                      # "bn"
-                      # "br"
-                      # "bs"
-                      # "ca-valencia"
-                      # "ca"
-                      # "cak"
-                      # "cs"
-                      # "cy"
-                      # "da"
-                      # "de"
-                      # "dsb"
-                      # "el"
-                      # "en-CA"
                       "en-GB"
                       "en-US"
-                      # "eo"
-                      # "es-AR"
-                      # "es-CL"
-                      # "es-ES"
-                      # "es-MX"
-                      # "et"
-                      # "eu"
-                      # "fa"
-                      # "ff"
-                      # "fi"
-                      # "fr"
-                      # "fur"
-                      # "fy-NL"
-                      # "ga-IE"
-                      # "gd"
-                      # "gl"
-                      # "gn"
-                      # "gu-IN"
-                      # "he"
-                      # "hi-IN"
-                      # "hr"
-                      # "hsb"
-                      # "hu"
-                      # "hy-AM"
-                      # "ia"
-                      # "id"
-                      # "is"
-                      # "it"
-                      # "ja"
-                      # "ka"
-                      # "kab"
-                      # "kk"
-                      # "km"
-                      # "kn"
-                      # "ko"
-                      # "lij"
-                      # "lt"
-                      # "lv"
-                      # "mk"
-                      # "mr"
-                      # "ms"
-                      # "my"
-                      # "nb-NO"
-                      # "ne-NP"
-                      # "nl"
-                      # "nn-NO"
-                      # "oc"
-                      # "pa-IN"
-                      # "pl"
-                      # "pt-BR"
-                      # "pt-PT"
-                      # "rm"
-                      # "ro"
-                      # "ru"
-                      # "sat"
-                      # "sc"
-                      # "sco"
-                      # "si"
-                      # "sk"
-                      # "skr"
-                      # "sl"
-                      # "son"
-                      # "sq"
-                      # "sr"
-                      # "sv-SE"
-                      # "szl"
-                      # "ta"
-                      # "te"
-                      # "tg"
-                      # "th"
-                      # "tl"
-                      # "tr"
-                      # "trs"
-                      # "uk"
-                      # "ur"
-                      # "uz"
-                      # "vi"
-                      # "xh"
-                      # "zh-CN"
-                      # "zh-TW"
                     ];
                     policies = {
                       DisableTelemetry = true;
@@ -437,7 +208,9 @@
                       # Check about:support for extension/add-on ID strings.
                       # Valid strings for installation_mode are "allowed", "blocked", "normal_installed" and "force_installed"
                       ExtensionSettings = {
-                        "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
+                        # Close up all addons except the ones specified below.
+                        "*".installation_mode = "blocked";
+
                         # Decentraleyes:
                         "jid1-BoFifL9Vbdl2zQ@jetpack" = {
                           install_url = "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi";
@@ -515,11 +288,11 @@
                   };
                   steam = {
                     enable = true;
-                    package = pkgs.steam; # old: pkgs.steam-unwrapped;
+                    package = pkgs.steam;
                   };
                   anime-games-launcher = {
-                    # `hoyoverse|kuro games|mrdrnose`.
                     # creates launcher and /etc/hosts rules.
+                    # `hoyoverse, kuro games, mrdrnose`.
                     enable = true;
                   };
                 };
@@ -527,11 +300,7 @@
                 # Manage service configurations declaratively.
                 services = {
                   xserver = {
-                    desktopManager = {
-                      xterm = {
-                        enable = false;
-                      };
-                    };
+                    desktopManager.xterm.enable = false;
                   };
                   displayManager = {
                     ly = {
@@ -545,11 +314,8 @@
                       };
                     };
                   };
-                  pulseaudio = {
-                    enable = true;
-                  };
                   pipewire = {
-                    enable = false;
+                    enable = true;
                     alsa = {
                       enable = true;
                       support32Bit = true;
@@ -565,7 +331,6 @@
                   };
                   dunst = {
                     enable = true;
-                    # settings.global = {} # refer to `.config` instead.
                   };
                   greetd = {
                     enable = false;
@@ -575,15 +340,45 @@
                 # Configure hardware-related configs
                 hardware = {
                   bluetooth = {
-                    enable = false;
+                    enable = true;
                   };
                   graphics = {
                     enable = true;
                   };
                 };
 
-                # Enable sound (using `pulseaudio`).
-                # sound = { enable = true; }; # deprecated.
+                # Environment variables exported per-user in sessions.
+                # For more on rec expressions see https://nix.dev/tutorials/first-steps/nix-language#recursive-attribute-set-rec
+                environment.sessionVariables = rec {
+                  # Programs
+                  TERMINAL = "kitty";
+                  BROWSER = "firefox";
+                  VISUAL = "nvim";
+                  EDITOR = "nvim";
+
+                  # XDG directories
+                  XDG_CACHE_HOME = "$HOME/.cache";
+                  XDG_CONFIG_HOME = "$HOME/.config";
+                  XDG_DATA_HOME = "$HOME/.local/share";
+                  XDG_STATE_HOME = "$HOME/.local/state";
+                  XDG_BIN_HOME = "$HOME/.local/bin";
+                  XDG_DOCUMENTS_DIR = "$HOME/Documents";
+                  XDG_MUSIC_DIR = "$HOME/Music";
+                  XDG_PICTURES_DIR = "$HOME/Pictures";
+                  XDG_SCREENSHOTS_DIR = "$XDG_PICTURES_DIR/Screenshots";
+
+                  # Environment variables
+                  PATH = [
+                    "$HOME/.spicetify"
+                    "$HOME/.scripts"
+                    "$HOME/.local/bin"
+                    "$HOME/.cargo/bin"
+                  ];
+
+                  # Wayland variables
+                  WLR_NO_HARDWARE_CURSORS = lib.mkIf use_nvidia "1"; # if your cursor becomes invis.
+                  NIXOS_OZONE_WL = "1";
+                };
 
                 # List packages installed in system profile.
                 # You can use https://search.nixos.org/ to find more packages (and options).
@@ -605,7 +400,7 @@
                   mpv
                   neofetch
                   ranger
-                  rofi # old: rofi-wayland
+                  rofi # or: rofi-wayland
                   waybar
                   (waybar.overrideAttrs (attrs: {
                     mesonFlags = attrs.mesonFlags ++ [ "-Dexperimental=true" ];
@@ -613,8 +408,8 @@
 
                   # Tools
                   git
-                  grim # screenshots
-                  slurp # area selection
+                  grim
+                  slurp
                   wl-clipboard
                   jq
                   nixfmt
@@ -628,7 +423,6 @@
                       xdg-desktop-portal-wlr
                       xdg-desktop-portal-gtk
                     ];
-                    # gtkUsePortal = true; # deprecated.
                   };
                 };
 
@@ -671,24 +465,12 @@
 
                 # System security configuration.
                 security = {
-                  sudo = {
-                    enable = false;
-                  };
-                  doas = {
-                    enable = true;
-                    extraRules = [
-                      {
-                        users = [ "archie" ];
-                        keepEnv = true;
-                        persist = true;
-                      }
-                    ];
-                  };
                   rtkit = {
                     enable = true;
                   };
                   protectKernelImage = true;
                 };
+
                 # Add global fonts available to all users and apps.
                 fonts.packages = with pkgs; [
                   pkgs.nerd-fonts.jetbrains-mono
