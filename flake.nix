@@ -81,28 +81,28 @@
                       # Deploy custom client configuration per-user.
                       home.file = {
                         # System-wide configuration.
-                        # "/etc/pulse" = { source = ./components/pulse; recursive = true; };
-                        # "/home/archie/.scripts" = { source = ./scripts; recursive = true; };
+                        "/etc/pulse" = { source = ./components/pulse; recursive = true; };
+                        "/home/archie/.scripts" = { source = ./scripts; recursive = true; };
 
                         # User configuration directories.
-                        # "/home/archie/.config/cava" = { source = ./components/cava; recursive = true; };
-                        # "/home/archie/.config/discord" = { source = ./components/discord; recursive = true; };
-                        # "/home/archie/.config/dunst" = { source = ./components/dunst; recursive = true; };
-                        # "/home/archie/.config/fastfetch" = { source = ./components/fastfetch; recursive = true; };
-                        # "/home/archie/.config/fish" = { source = ./components/fish; recursive = true; };
-                        # "/home/archie/.config/gtk-3.0" = { source = ./components/gtk-3.0; recursive = true; };
-                        # "/home/archie/.config/gtk-4.0" = { source = ./components/gtk-4.0; recursive = true; };
-                        # "/home/archie/.config/hypr" = { source = ./components/hypr; recursive = true; };
-                        # "/home/archie/.config/htop" = { source = ./components/htop; recursive = true; };
-                        # "/home/archie/.config/kitty" = { source = ./components/kitty; recursive = true; };
-                        # "/home/archie/.config/neofetch" = { source = ./components/neofetch; recursive = true; };
-                        # "/home/archie/.config/nvim" = { source = ./components/nvim; recursive = true; };
-                        # "/home/archie/.config/ranger" = { source = ./components/ranger; recursive = true; };
-                        # "/home/archie/.config/rofi" = { source = ./components/rofi; recursive = true; };
-                        # "/home/archie/.config/starship" = { source = ./components/starship; recursive = true; };
-                        # "/home/archie/.config/wofi" = { source = ./components/wofi; recursive = true; };
-                        # "/home/archie/.config/.zshrc" = { source = ./components/.zshrc; recursive = true; };
-                        # "/home/archie/.config/zsh" = { source = ./components/zsh; recursive = true; };
+                        "/home/archie/.config/cava" = { source = ./components/cava; recursive = true; };
+                        "/home/archie/.config/discord" = { source = ./components/discord; recursive = true; };
+                        "/home/archie/.config/dunst" = { source = ./components/dunst; recursive = true; };
+                        "/home/archie/.config/fastfetch" = { source = ./components/fastfetch; recursive = true; };
+                        "/home/archie/.config/fish" = { source = ./components/fish; recursive = true; };
+                        "/home/archie/.config/gtk-3.0" = { source = ./components/gtk-3.0; recursive = true; };
+                        "/home/archie/.config/gtk-4.0" = { source = ./components/gtk-4.0; recursive = true; };
+                        "/home/archie/.config/hypr" = { source = ./components/hypr; recursive = true; };
+                        "/home/archie/.config/htop" = { source = ./components/htop; recursive = true; };
+                        "/home/archie/.config/kitty" = { source = ./components/kitty; recursive = true; };
+                        "/home/archie/.config/neofetch" = { source = ./components/neofetch; recursive = true; };
+                        "/home/archie/.config/nvim" = { source = ./components/nvim; recursive = true; };
+                        "/home/archie/.config/ranger" = { source = ./components/ranger; recursive = true; };
+                        "/home/archie/.config/rofi" = { source = ./components/rofi; recursive = true; };
+                        "/home/archie/.config/starship" = { source = ./components/starship; recursive = true; };
+                        "/home/archie/.config/wofi" = { source = ./components/wofi; recursive = true; };
+                        "/home/archie/.config/.zshrc" = { source = ./components/.zshrc; recursive = true; };
+                        "/home/archie/.config/zsh" = { source = ./components/zsh; recursive = true; };
                       };
                     };
                 };
